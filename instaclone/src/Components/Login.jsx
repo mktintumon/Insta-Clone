@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [loader, setLoader] = useState(false);
+  const [error, setError] = useState("");
 
   const trackEmail = (e) => {
     setEmail(e.target.value);
@@ -12,29 +17,67 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  const printDetails = () => {
-    alert(email + " " + password);
+  const printDetails = async () => {
+    //alert(email + " " + password);
+
+    try {
+      setLoader(true);
+      let userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      //console.log(userCredential.user);
+      setUser(userCredential.user);
+    } catch (error) {
+      setError(error.message);
+
+      //after some time -> remove error meaasge
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
+
+    setLoader(false);
+  };
+
+  const signout = async () => {
+    await signOut(auth);
+    setUser(null);
   };
 
   return (
     <>
-      <input
-        type="email"
-        onChange={trackEmail}
-        value={email}
-        placeholder="Email"
-      ></input>
+      {error != "" ? (
+        <h1>{error}</h1>
+      ) : loader == true ? (
+        <h1>Loading....</h1>
+      ) : user != null ? (
+        <>
+          <h1>user is {user.uid}</h1>
+          <button onClick={signout}>signout</button>
+        </>
+      ) : (
+        <>
+          <input
+            type="email"
+            onChange={trackEmail}
+            value={email}
+            placeholder="Email"
+          ></input>
 
-      <input
-        type="password"
-        onChange={trackPassword}
-        value={password}
-        placeholder="Password"
-      ></input>
+          <input
+            type="password"
+            onChange={trackPassword}
+            value={password}
+            placeholder="Password"
+          ></input>
 
-      <button type="click" onClick={printDetails}>
-        Login
-      </button>
+          <button type="click" onClick={printDetails}>
+            Login
+          </button>
+        </>
+      )}
     </>
   );
 }
