@@ -1,8 +1,9 @@
-/secrets.js
+
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+.secrets.js
 
 # testing
 /coverage
