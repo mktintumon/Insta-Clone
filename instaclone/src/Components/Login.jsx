@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +12,7 @@ function Login() {
   const [user, setUser] = useState(null);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState("");
+  const [mainLoader, setMainLoader] = useState(true);
 
   const trackEmail = (e) => {
     setEmail(e.target.value);
@@ -46,9 +51,25 @@ function Login() {
     setUser(null);
   };
 
+  // This will always call and check for user existence
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        setUser(user);
+      } else {
+        // User is signed out
+        setUser(null);
+      }
+      setMainLoader(false)
+    });
+  }, []);
+
   return (
     <>
-      {error != "" ? (
+      {mainLoader == true ? (
+        <h1>Page loading....</h1>
+      ) : error != "" ? (
         <h1>{error}</h1>
       ) : loader == true ? (
         <h1>Loading....</h1>
