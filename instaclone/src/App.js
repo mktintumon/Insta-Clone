@@ -4,13 +4,15 @@ import Login from './Components/Login'
 import PageNotFound from './Components/PageNotFound'
 import Profile from './Components/Profile'
 import Signup from './Components/Signup'
+import { AuthContextProvider } from "./Context/AuthContext";
 import { Switch, Route } from 'react-router-dom'
 
 
 function App() {
   return (
     <>
-      <Switch>
+    <AuthContextProvider>
+    <Switch>
         <Route path='/feed'>
           <Feed></Feed>
         </Route>
@@ -32,6 +34,8 @@ function App() {
         </Route>
         
       </Switch>
+    </AuthContextProvider>
+      
     </>
   );
 }

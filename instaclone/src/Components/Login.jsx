@@ -12,7 +12,7 @@ function Login() {
   const [user, setUser] = useState(null);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState("");
-  const [mainLoader, setMainLoader] = useState(true);
+  //const [mainLoader, setMainLoader] = useState(true);
 
   const trackEmail = (e) => {
     setEmail(e.target.value);
@@ -61,15 +61,13 @@ function Login() {
         // User is signed out
         setUser(null);
       }
-      setMainLoader(false)
+      // setMainLoader(false);
     });
   }, []);
 
   return (
     <>
-      {mainLoader == true ? (
-        <h1>Page loading....</h1>
-      ) : error != "" ? (
+      {error != "" ? (
         <h1>{error}</h1>
       ) : loader == true ? (
         <h1>Loading....</h1>
