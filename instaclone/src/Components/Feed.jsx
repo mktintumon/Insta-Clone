@@ -11,7 +11,9 @@ function Feed() {
     alt="" className='profile_img'/>
    </div>
    <div className="main_container">
-     <div className="upload_container">Upload</div>
+     <div className="upload_container">
+     <i class="fa-solid fa-clapperboard"></i>
+     </div>
      <div className="reels_container">Reels</div>
    </div>
    </>
