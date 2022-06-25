@@ -20,6 +20,8 @@ function Signup() {
         password
       );
 
+      // we are using set method here because we want our own key
+      // add method dont allow user built key 
       await setDoc(doc(db, "users", userCredential.user.uid), {
         email,
         name,

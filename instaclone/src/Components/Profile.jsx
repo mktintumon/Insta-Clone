@@ -5,28 +5,29 @@ import "./profile.css";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 function Profile() {
+  
   // use case  -> to give me uid
   let cUser = useContext(AuthContext);
   let [user, setUser] = useState();
   let [pageLoading, setPageLoading] = useState(true);
+
   useEffect(function fun() {
     (async function () {
       // get user
-      // docRef
+
       // firebase 8 version
       // var docRef = db.collection("users").doc(cUser.uid);
       // let userObj = await docRef.get();
+
       // firebase 9 
       const docRef = doc(db, "users", cUser.uid);
       const userObj = await getDoc(docRef);
       console.log("Document data:", userObj.data());
       setUser(userObj.data());
       setPageLoading(false);
-    }
-      // setUser
-      // setpageLoading
-    )()
+    })()
   }, []);
+
   return (
     <>
       {pageLoading == true ?
@@ -40,9 +41,9 @@ function Profile() {
             </div>
             <div className="details">
               <div className="content">{user.name}  </div>
-              <div className="content">No of Posts:{user.reelsIds.length} <span
+              <div className="content">No of Posts: <span
                 className="bold_text"
-              >Posts</span></div>
+              >{user.reelsIds.length} Posts</span></div>
               <div className="content"
               >Email <span
                 className="bold_text">{user.email}</span></div>
